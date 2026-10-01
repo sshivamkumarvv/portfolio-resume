@@ -1,10 +1,12 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { SimpleResumeView } from "@/components/SimpleResumeView";
 
 export default function ResumePage() {
+  const router = useRouter();
+
   const handlePrint = () => {
     window.print();
   };
@@ -13,7 +15,7 @@ export default function ResumePage() {
     <div className="min-h-screen bg-slate-950 text-slate-100">
       <SimpleResumeView
         onSwitchToPortfolio={() => {
-          window.location.href = "/";
+          router.push("/");
         }}
         onPrint={handlePrint}
       />

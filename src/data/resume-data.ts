@@ -35,8 +35,27 @@ export interface EducationItem {
   note?: string;
 }
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
-export const RESUME_PDF_URL = `${basePath}/Shivam_Kumar_Resume.pdf`;
+export function getResumePdfUrl(): string {
+  if (typeof window !== "undefined") {
+    if (window.location.pathname.startsWith("/portfolio-resume")) {
+      return "/portfolio-resume/Shivam_Kumar_Resume.pdf";
+    }
+    const envBasePath = process.env.NEXT_PUBLIC_BASE_PATH;
+    if (envBasePath && envBasePath.length > 0) {
+      return `${envBasePath}/Shivam_Kumar_Resume.pdf`;
+    }
+    return "/Shivam_Kumar_Resume.pdf";
+  }
+  const basePath =
+    process.env.NEXT_PUBLIC_BASE_PATH ??
+    (process.env.GITHUB_ACTIONS === "true" ? "/portfolio-resume" : "");
+  return `${basePath}/Shivam_Kumar_Resume.pdf`;
+}
+
+const defaultBasePath =
+  process.env.NEXT_PUBLIC_BASE_PATH ??
+  (process.env.GITHUB_ACTIONS === "true" ? "/portfolio-resume" : "");
+export const RESUME_PDF_URL = `${defaultBasePath}/Shivam_Kumar_Resume.pdf`;
 
 export const RESUME_DATA = {
   personal: {

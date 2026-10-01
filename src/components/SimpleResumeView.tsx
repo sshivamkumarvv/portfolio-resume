@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Printer,
   Check,
@@ -12,7 +12,7 @@ import {
   Eye,
   Smartphone,
 } from "lucide-react";
-import { RESUME_DATA, RESUME_PDF_URL } from "@/data/resume-data";
+import { RESUME_DATA, RESUME_PDF_URL, getResumePdfUrl } from "@/data/resume-data";
 
 interface SimpleResumeViewProps {
   onSwitchToPortfolio: () => void;
@@ -25,6 +25,11 @@ export function SimpleResumeView({
 }: SimpleResumeViewProps) {
   const [copied, setCopied] = useState(false);
   const [displayMode, setDisplayMode] = useState<"embedded" | "web">("embedded");
+  const [pdfUrl, setPdfUrl] = useState<string>(RESUME_PDF_URL);
+
+  useEffect(() => {
+    setPdfUrl(getResumePdfUrl());
+  }, []);
 
   const copyPageLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -101,7 +106,7 @@ export function SimpleResumeView({
               </button>
 
               <a
-                href={RESUME_PDF_URL}
+                href={pdfUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-sky-500 to-indigo-600 text-white text-xs font-bold shadow-md shadow-sky-500/25 transition-all"
@@ -163,7 +168,7 @@ export function SimpleResumeView({
               </button>
 
               <a
-                href={RESUME_PDF_URL}
+                href={pdfUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 text-xs font-medium transition-colors"
@@ -174,7 +179,7 @@ export function SimpleResumeView({
               </a>
 
               <a
-                href={RESUME_PDF_URL}
+                href={pdfUrl}
                 download="Shivam_Kumar_Resume.pdf"
                 className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white text-xs sm:text-sm font-bold shadow-md shadow-sky-500/25 transition-all shrink-0"
                 title="Download Original PDF"
@@ -200,7 +205,7 @@ export function SimpleResumeView({
             <div className="sm:hidden w-full mb-2 p-2 rounded-lg bg-slate-800/90 border border-slate-700/80 flex items-center justify-between text-xs text-slate-300">
               <span className="truncate mr-2">📱 For fullscreen native zoom:</span>
               <a
-                href={RESUME_PDF_URL}
+                href={pdfUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sky-400 font-semibold underline shrink-0"
@@ -212,13 +217,13 @@ export function SimpleResumeView({
             {/* Embedded PDF Frame */}
             <div className="w-full flex-1 rounded-xl overflow-hidden shadow-2xl border border-slate-700/60 bg-white">
               <object
-                data={`${RESUME_PDF_URL}#view=FitH`}
+                data={`${pdfUrl}#view=FitH`}
                 type="application/pdf"
                 className="w-full h-full min-h-[75vh]"
               >
                 {/* Fallback if browser blocks embedded PDF objects */}
                 <iframe
-                  src={`${RESUME_PDF_URL}#view=FitH`}
+                  src={`${pdfUrl}#view=FitH`}
                   className="w-full h-full min-h-[75vh] border-0"
                   title="Shivam Kumar Resume PDF"
                 >
@@ -227,7 +232,7 @@ export function SimpleResumeView({
                       Unable to display embedded PDF directly in this browser.
                     </p>
                     <a
-                      href={RESUME_PDF_URL}
+                      href={pdfUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-sky-600 text-white font-semibold text-sm"

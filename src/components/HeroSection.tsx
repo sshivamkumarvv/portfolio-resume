@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Mail,
   Phone,
@@ -17,7 +17,7 @@ import {
   Download,
 } from "lucide-react";
 import { LinkedinIcon, GithubIcon } from "@/components/SocialIcons";
-import { RESUME_DATA, RESUME_PDF_URL } from "@/data/resume-data";
+import { RESUME_DATA, RESUME_PDF_URL, getResumePdfUrl } from "@/data/resume-data";
 
 interface HeroSectionProps {
   onSwitchToResume: () => void;
@@ -26,6 +26,11 @@ interface HeroSectionProps {
 
 export function HeroSection({ onSwitchToResume, onPrint }: HeroSectionProps) {
   const [copiedItem, setCopiedItem] = useState<string | null>(null);
+  const [pdfUrl, setPdfUrl] = useState<string>(RESUME_PDF_URL);
+
+  useEffect(() => {
+    setPdfUrl(getResumePdfUrl());
+  }, []);
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -176,7 +181,7 @@ export function HeroSection({ onSwitchToResume, onPrint }: HeroSectionProps) {
             </button>
 
             <a
-              href={RESUME_PDF_URL}
+              href={pdfUrl}
               target="_blank"
               rel="noopener noreferrer"
               download="Shivam_Kumar_Resume.pdf"
