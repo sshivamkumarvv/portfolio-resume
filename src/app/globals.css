@@ -2,6 +2,11 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme inline {
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-resume: var(--font-open-sans), "Calibri", "Gill Sans", "Segoe UI", Roboto, sans-serif;
+}
+
 :root {
   --bg-primary: #090d16;
   --bg-secondary: #0f172a;
@@ -36,10 +41,21 @@ html {
 }
 
 body {
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
   transition: background-color 0.25s ease, color 0.25s ease;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Authentic Resume Typography and Paper */
+.resume-paper {
+  font-family: var(--font-open-sans), "Calibri", "Gill Sans", "Segoe UI", Roboto, sans-serif;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ==========================================================================
@@ -192,7 +208,7 @@ body {
 /* Dedicated Print Styles for Resume View */
 @media print {
   @page {
-    margin: 12mm 15mm 12mm 15mm;
+    margin: 10mm 12mm 10mm 12mm;
     size: letter portrait;
   }
 
@@ -200,10 +216,9 @@ body {
     background: #ffffff !important;
     color: #111827 !important;
     font-size: 10.5pt;
-    line-height: 1.35;
+    line-height: 1.3;
   }
 
-  /* Hide interactive portfolio chrome in print */
   .no-print,
   nav,
   header,
@@ -229,7 +244,6 @@ body {
     text-decoration: none !important;
   }
 
-  /* Make sure borders are crisp in print */
   .resume-paper {
     border: none !important;
     box-shadow: none !important;
