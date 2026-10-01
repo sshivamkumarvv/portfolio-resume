@@ -10,9 +10,10 @@ import {
   Menu,
   X,
   Mail,
+  Download,
 } from "lucide-react";
 import { LinkedinIcon, GithubIcon } from "@/components/SocialIcons";
-import { RESUME_DATA } from "@/data/resume-data";
+import { RESUME_DATA, RESUME_PDF_URL } from "@/data/resume-data";
 
 interface NavbarProps {
   currentView: "portfolio" | "resume";
@@ -114,16 +115,18 @@ export function Navbar({
               </button>
             </div>
 
-            {/* Print / Save PDF Button (hidden on narrow screens to save space, accessible inside menu or on resume page) */}
-            <button
-              type="button"
-              onClick={onPrint}
+            {/* Direct PDF Download / Open Button */}
+            <a
+              href={RESUME_PDF_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              download="Shivam_Kumar_Resume.pdf"
               className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium text-slate-300 bg-slate-800/80 hover:bg-slate-700/80 hover:text-white border border-slate-700/60 rounded-lg transition-all shadow-sm"
-              title="Print or Save Resume as PDF"
+              title="Download Original Resume PDF"
             >
-              <Printer className="w-3.5 h-3.5 text-sky-400 shrink-0" />
-              <span>Print / PDF</span>
-            </button>
+              <Download className="w-3.5 h-3.5 text-sky-400 shrink-0" />
+              <span>Download PDF</span>
+            </a>
 
             {/* Theme Toggle */}
             <button
@@ -192,17 +195,17 @@ export function Navbar({
               </button>
             </div>
 
-            <button
-              type="button"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onPrint();
-              }}
-              className="w-full py-2 px-3 text-xs font-semibold rounded-lg bg-slate-800 text-sky-400 flex items-center justify-center gap-1.5"
+            <a
+              href={RESUME_PDF_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              download="Shivam_Kumar_Resume.pdf"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full py-2.5 px-3 text-xs font-semibold rounded-lg bg-gradient-to-r from-sky-500 to-indigo-600 text-white flex items-center justify-center gap-1.5 shadow-md shadow-sky-500/20"
             >
-              <Printer className="w-3.5 h-3.5" />
-              Print or Save Resume as PDF
-            </button>
+              <Download className="w-3.5 h-3.5" />
+              <span>Download Original PDF (100% Fidelity)</span>
+            </a>
 
             {currentView === "portfolio" &&
               navLinks.map((link) => (

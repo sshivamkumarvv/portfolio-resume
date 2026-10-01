@@ -35,6 +35,9 @@ export interface EducationItem {
   note?: string;
 }
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+export const RESUME_PDF_URL = `${basePath}/Shivam_Kumar_Resume.pdf`;
+
 export const RESUME_DATA = {
   personal: {
     name: "Shivam Kumar",
@@ -43,6 +46,7 @@ export const RESUME_DATA = {
     phone: "+91 8198978095",
     phoneDisplay: "+91 8198978095",
     email: "shivamgcs9@gmail.com",
+    pdfUrl: RESUME_PDF_URL,
     location: "Gurugram / Noida, India",
     linkedin: "https://linkedin.com/in/sshivamkumarvv",
     linkedinDisplay: "linkedin.com/in/sshivamkumarvv",

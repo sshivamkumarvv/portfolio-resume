@@ -14,9 +14,10 @@ import {
   Code2,
   Cpu,
   ShieldCheck,
+  Download,
 } from "lucide-react";
 import { LinkedinIcon, GithubIcon } from "@/components/SocialIcons";
-import { RESUME_DATA } from "@/data/resume-data";
+import { RESUME_DATA, RESUME_PDF_URL } from "@/data/resume-data";
 
 interface HeroSectionProps {
   onSwitchToResume: () => void;
@@ -174,14 +175,16 @@ export function HeroSection({ onSwitchToResume, onPrint }: HeroSectionProps) {
               <span>View ATS Resume Page</span>
             </button>
 
-            <button
-              type="button"
-              onClick={onPrint}
+            <a
+              href={RESUME_PDF_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              download="Shivam_Kumar_Resume.pdf"
               className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white font-semibold text-sm border border-slate-800 hover:border-slate-700 transition-all"
             >
-              <Sparkles className="w-4 h-4 text-amber-400" />
-              <span>Save / Print PDF</span>
-            </button>
+              <Download className="w-4 h-4 text-amber-400" />
+              <span>Download Resume PDF</span>
+            </a>
           </div>
         </div>
 
