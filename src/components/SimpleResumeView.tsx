@@ -6,12 +6,7 @@ import {
   Check,
   ArrowLeft,
   Share2,
-  FileText,
-  ChevronDown,
-  ChevronUp,
-  Download,
   ZoomIn,
-  ZoomOut,
   Smartphone,
 } from "lucide-react";
 import { RESUME_DATA } from "@/data/resume-data";
@@ -77,32 +72,63 @@ export function SimpleResumeView({
   return (
     <div className="min-h-screen bg-[#1e232d] text-slate-100 flex flex-col print:bg-white print:text-black">
       {/* =========================================================================
-          TOP PDF VIEWER TOOLBAR (Like Mobile Acrobat / Drive PDF Viewer)
+          TOP PDF VIEWER TOOLBAR (Clean Responsive Non-Overlapping Mobile Header)
           ========================================================================= */}
-      <header className="sticky top-0 z-40 bg-[#161a22]/95 backdrop-blur-md border-b border-slate-700/80 px-3 py-2.5 sm:px-6 no-print shadow-md">
-        <div className="max-w-5xl mx-auto flex items-center justify-between gap-2">
-          {/* Back to Portfolio Button */}
-          <button
-            type="button"
-            onClick={onSwitchToPortfolio}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-semibold border border-slate-700 transition-colors shrink-0"
-          >
-            <ArrowLeft className="w-4 h-4 shrink-0" />
-            <span className="hidden xs:inline">Back to Portfolio</span>
-            <span className="xs:hidden">Portfolio</span>
-          </button>
+      <header className="sticky top-0 z-40 bg-[#161a22]/95 backdrop-blur-md border-b border-slate-700/80 px-3 py-2 sm:px-6 no-print shadow-md">
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2">
+          {/* Top Row on mobile: Back Button + Doc Title + Quick Actions */}
+          <div className="flex items-center justify-between gap-2">
+            <button
+              type="button"
+              onClick={onSwitchToPortfolio}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-semibold border border-slate-700 transition-colors shrink-0"
+            >
+              <ArrowLeft className="w-4 h-4 shrink-0" />
+              <span>Portfolio</span>
+            </button>
 
-          {/* Document Title & Page Count Indicator */}
-          <div className="flex items-center gap-1.5 sm:gap-3">
-            <span className="hidden md:inline text-xs font-medium text-slate-300">
+            <span className="text-[11px] xs:text-xs font-medium text-slate-300 truncate max-w-[140px] xs:max-w-xs">
               Shivam_Kumar_Resume.pdf
             </span>
+
+            {/* Mobile-only Quick Action Buttons */}
+            <div className="flex sm:hidden items-center gap-1.5 shrink-0">
+              <button
+                type="button"
+                onClick={copyPageLink}
+                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-colors"
+                title="Share Resume Link"
+              >
+                {copied ? (
+                  <Check className="w-4 h-4 text-emerald-400" />
+                ) : (
+                  <Share2 className="w-4 h-4" />
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={onPrint}
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-sky-500 to-indigo-600 text-white text-xs font-bold shadow-md shadow-sky-500/25 transition-all"
+                title="Print or Save PDF"
+              >
+                <Printer className="w-3.5 h-3.5 shrink-0" />
+                <span>PDF</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Bottom Row on mobile / Right Side on Desktop: Page Switcher & Zoom */}
+          <div className="flex items-center justify-between sm:justify-end gap-2 border-t border-slate-800/80 pt-1.5 sm:border-none sm:pt-0">
+            {/* Page 1 / Page 2 switcher */}
             <div className="flex items-center bg-slate-800/90 border border-slate-700 rounded-lg p-0.5 text-xs text-slate-300">
               <button
                 type="button"
                 onClick={() => scrollToPage(1)}
-                className={`px-2 py-1 rounded text-xs font-semibold transition-colors ${
-                  activePage === 1 ? "bg-sky-600 text-white" : "hover:text-white"
+                className={`px-2.5 py-1 rounded text-xs font-semibold transition-colors ${
+                  activePage === 1
+                    ? "bg-sky-600 text-white shadow-xs"
+                    : "hover:text-white text-slate-400"
                 }`}
               >
                 Page 1
@@ -110,63 +136,66 @@ export function SimpleResumeView({
               <button
                 type="button"
                 onClick={() => scrollToPage(2)}
-                className={`px-2 py-1 rounded text-xs font-semibold transition-colors ${
-                  activePage === 2 ? "bg-sky-600 text-white" : "hover:text-white"
+                className={`px-2.5 py-1 rounded text-xs font-semibold transition-colors ${
+                  activePage === 2
+                    ? "bg-sky-600 text-white shadow-xs"
+                    : "hover:text-white text-slate-400"
                 }`}
               >
                 Page 2
               </button>
             </div>
-          </div>
 
-          {/* Right Action Icons: Zoom Toggle & Print */}
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            {/* Mobile View Toggle */}
-            <div className="sm:hidden flex items-center bg-slate-800 border border-slate-700 rounded-lg p-0.5">
+            {/* Mobile Zoom / Fit Switcher */}
+            <div className="flex items-center bg-slate-800 border border-slate-700 rounded-lg p-0.5">
               <button
                 type="button"
                 onClick={() => setZoomLevel(zoomLevel === "fit" ? "actual" : "fit")}
-                className="px-2 py-1 text-xs font-medium text-slate-300 hover:text-white flex items-center gap-1"
+                className="px-2.5 py-1 text-xs font-medium text-slate-300 hover:text-white flex items-center gap-1 transition-colors"
                 title="Toggle Zoom / Fit"
               >
                 {zoomLevel === "fit" ? (
                   <>
-                    <ZoomIn className="w-3.5 h-3.5" />
+                    <ZoomIn className="w-3.5 h-3.5 text-sky-400" />
                     <span>Zoom</span>
                   </>
                 ) : (
                   <>
-                    <Smartphone className="w-3.5 h-3.5" />
+                    <Smartphone className="w-3.5 h-3.5 text-sky-400" />
                     <span>Fit</span>
                   </>
                 )}
               </button>
             </div>
 
-            {/* Share Link */}
-            <button
-              type="button"
-              onClick={copyPageLink}
-              className="p-2 sm:px-3 sm:py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 text-xs font-medium transition-colors"
-              title="Copy Resume Link"
-            >
-              {copied ? (
-                <Check className="w-4 h-4 text-emerald-400" />
-              ) : (
-                <Share2 className="w-4 h-4" />
-              )}
-            </button>
+            {/* Desktop-only Share & Print buttons */}
+            <div className="hidden sm:flex items-center gap-2">
+              <button
+                type="button"
+                onClick={copyPageLink}
+                className="p-1.5 sm:px-3 sm:py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 text-xs font-medium transition-colors"
+                title="Copy Resume Link"
+              >
+                {copied ? (
+                  <span className="flex items-center gap-1 text-emerald-400">
+                    <Check className="w-4 h-4" /> Copied!
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-1">
+                    <Share2 className="w-4 h-4" /> Share
+                  </span>
+                )}
+              </button>
 
-            {/* Print / Save PDF */}
-            <button
-              type="button"
-              onClick={onPrint}
-              className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-lg bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white text-xs sm:text-sm font-bold shadow-md shadow-sky-500/25 transition-all shrink-0"
-              title="Print or Save PDF"
-            >
-              <Printer className="w-3.5 h-3.5 shrink-0" />
-              <span>Print / PDF</span>
-            </button>
+              <button
+                type="button"
+                onClick={onPrint}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white text-xs sm:text-sm font-bold shadow-md shadow-sky-500/25 transition-all shrink-0"
+              >
+                <Printer className="w-3.5 h-3.5 shrink-0" />
+                <span>Print / PDF</span>
+              </button>
+            </div>
           </div>
         </div>
       </header>
