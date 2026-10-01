@@ -14,25 +14,26 @@ import { Footer } from "@/components/Footer";
 export default function Home() {
   const [currentView, setCurrentView] = useState<"portfolio" | "resume">("portfolio");
   const [isDark, setIsDark] = useState<boolean>(true);
+  const [mounted, setMounted] = useState<boolean>(false);
 
-  // Check URL parameter or hash on load
+  // Initialize theme and view on mount
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const hash = window.location.hash;
-      const search = window.location.search;
-      if (hash === "#resume" || search.includes("view=resume")) {
-        setCurrentView("resume");
-      }
+    setMounted(true);
+    const hash = window.location.hash;
+    const search = window.location.search;
+    if (hash === "#resume" || search.includes("view=resume")) {
+      setCurrentView("resume");
+    }
 
-      // Check saved theme
-      const savedTheme = localStorage.getItem("theme");
-      if (savedTheme === "light") {
-        setIsDark(false);
-        document.documentElement.setAttribute("data-theme", "light");
-      } else {
-        setIsDark(true);
-        document.documentElement.removeAttribute("data-theme");
-      }
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "light") {
+      setIsDark(false);
+      document.documentElement.setAttribute("data-theme", "light");
+      document.body.setAttribute("data-theme", "light");
+    } else {
+      setIsDark(true);
+      document.documentElement.setAttribute("data-theme", "dark");
+      document.body.setAttribute("data-theme", "dark");
     }
   }, []);
 
@@ -40,10 +41,12 @@ export default function Home() {
     if (isDark) {
       setIsDark(false);
       document.documentElement.setAttribute("data-theme", "light");
+      document.body.setAttribute("data-theme", "light");
       localStorage.setItem("theme", "light");
     } else {
       setIsDark(true);
-      document.documentElement.removeAttribute("data-theme");
+      document.documentElement.setAttribute("data-theme", "dark");
+      document.body.setAttribute("data-theme", "dark");
       localStorage.setItem("theme", "dark");
     }
   };
@@ -51,7 +54,6 @@ export default function Home() {
   const handlePrint = () => {
     if (currentView !== "resume") {
       setCurrentView("resume");
-      // Wait for DOM to render the clean resume before triggering print dialog
       setTimeout(() => {
         window.print();
       }, 200);
@@ -60,8 +62,17 @@ export default function Home() {
     }
   };
 
+  const activeTheme = mounted ? (isDark ? "dark" : "light") : "dark";
+
   return (
-    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 transition-colors">
+    <div
+      data-theme={activeTheme}
+      className={`min-h-screen flex flex-col transition-colors duration-200 ${
+        activeTheme === "light"
+          ? "bg-slate-50 text-slate-900"
+          : "bg-slate-950 text-slate-100"
+      }`}
+    >
       <div className="no-print">
         <Navbar
           currentView={currentView}
